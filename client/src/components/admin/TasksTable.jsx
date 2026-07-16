@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { deleteTask } from '../../api/tasks';
+import ConfirmDialog from '../ConfirmDialog';
 
 /* ── SVG Action Icons ── */
 const IconEdit = () => (
@@ -42,8 +44,13 @@ const STATUS_CLASS = {
 };
 
 const TasksTable = ({ tasks, onEdit, onRefresh }) => {
+  // Task awaiting delete confirmation — the API call only fires after
+  // the admin confirms in the dialog (destructive action, issue #26)
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
-  const handleDelete = async (id) => {
+  const handleDeleteConfirmed = async () => {
+    const id = deleteTarget._id;
+    setDeleteTarget(null);
     try {
       await deleteTask(id);
       onRefresh();
@@ -145,7 +152,7 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
                     <IconEdit />
                   </button>
                   <button
-                    onClick={() => handleDelete(task._id)}
+                    onClick={() => setDeleteTarget(task)}
                     title="Delete task"
                     className="action-btn action-btn-delete">
                     <IconDelete />
@@ -156,6 +163,16 @@ const TasksTable = ({ tasks, onEdit, onRefresh }) => {
           ))}
         </tbody>
       </table>
+
+      {deleteTarget && (
+        <ConfirmDialog
+          title="Delete this task?"
+          message={`"${deleteTarget.title || 'Untitled Task'}" will be permanently deleted. This action cannot be undone.`}
+          confirmLabel="Delete Task"
+          onConfirm={handleDeleteConfirmed}
+          onCancel={() => setDeleteTarget(null)}
+        />
+      )}
     </div>
   );
 };
