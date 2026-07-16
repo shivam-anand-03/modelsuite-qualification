@@ -42,9 +42,9 @@ const MyTasksList = ({ tasks, onRefresh }) => {
     return (
       <div className="py-12 px-6 text-center rounded-xl"
         style={{
-          background: 'rgba(255,255,255,0.015)',
-          border: '1px dashed rgba(255,255,255,0.1)',
-          color: 'rgba(255,255,255,0.3)',
+          background: 'var(--surface-1)',
+          border: '1px dashed var(--border-c)',
+          color: 'var(--text-faint)',
           fontSize: '13px',
           fontFamily: 'Inter, sans-serif',
         }}>
@@ -69,11 +69,11 @@ const MyTasksList = ({ tasks, onRefresh }) => {
             {/* Task info */}
             <div className="flex-1 min-w-0">
               <p className="font-semibold truncate mb-0.5"
-                style={{ fontSize: '13.5px', color: '#E5E2E1', fontFamily: 'Inter, sans-serif' }}>
+                style={{ fontSize: '13.5px', color: 'var(--text-strong)', fontFamily: 'Inter, sans-serif' }}>
                 {task.title || 'Untitled Task'}
               </p>
               {fmtDate(task.dueDate) && (
-                <p className="flex items-center gap-1.5 text-[11.5px]" style={{ color: '#4B5563' }}>
+                <p className="flex items-center gap-1.5 text-[11.5px]" style={{ color: 'var(--text-subtle)' }}>
                   <IconCalendar />
                   Due {fmtDate(task.dueDate)}
                 </p>
@@ -88,7 +88,7 @@ const MyTasksList = ({ tasks, onRefresh }) => {
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold cursor-pointer border transition-all"
                   style={{
                     background: 'rgba(59,130,246,0.08)',
-                    color: '#60A5FA',
+                    color: 'var(--accent-text)',
                     borderColor: 'rgba(59,130,246,0.25)',
                     fontFamily: 'Inter, sans-serif',
                     transition: 'background 0.15s, border-color 0.15s',

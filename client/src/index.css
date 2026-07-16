@@ -2,22 +2,138 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────
+   Theme variables — Premium Dark (default) & Light
+   Every color in the app resolves through these, so flipping
+   [data-theme] on <html> re-themes the whole application.
+───────────────────────────────────────── */
+:root,
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* Deep, rich blue-black layers (issue #169 direction) */
+  --bg-page:       #060A16;
+  --bg-panel:      #0A101F;
+  --bg-elevated:   #0D1526;
+  --bg-input:      rgba(148, 163, 184, 0.06);
+  --bg-hover:      rgba(148, 163, 184, 0.07);
+  --surface-1:     rgba(148, 163, 184, 0.025);
+  --surface-card:  rgba(148, 163, 184, 0.035);
+
+  --border-c:      rgba(148, 163, 184, 0.14);
+  --border-strong: rgba(148, 163, 184, 0.28);
+
+  --text-primary:  #F1F5F9;
+  --text-strong:   #E2E8F0;
+  --text-muted:    #7C87A0;
+  --text-subtle:   #566179;
+  --text-faint:    rgba(226, 232, 240, 0.35);
+
+  --accent-text:   #60A5FA;
+  --success-text:  #34D399;
+  --danger-text:   #F87171;
+  --warning-text:  #FBBF24;
+
+  /* Glows & elevation — soft light-source shadows + accent glow */
+  --shadow-card:   0 8px 24px rgba(2, 6, 23, 0.45);
+  --shadow-lift:   0 12px 32px rgba(2, 6, 23, 0.55), 0 0 0 1px rgba(59, 130, 246, 0.10), 0 0 24px rgba(59, 130, 246, 0.08);
+  --shadow-modal:  0 32px 80px rgba(2, 6, 23, 0.72), 0 0 0 1px rgba(148, 163, 184, 0.08);
+  --glow-ring:     0 0 0 3px rgba(59, 130, 246, 0.14);
+
+  --grad-text-from: #FFFFFF;
+  --grad-text-to:   #7C87A0;
+
+  --scrollbar-thumb:       rgba(148, 163, 184, 0.14);
+  --scrollbar-thumb-hover: rgba(148, 163, 184, 0.24);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --bg-page:       #F3F5FA;
+  --bg-panel:      #FFFFFF;
+  --bg-elevated:   #F7F9FD;
+  --bg-input:      rgba(15, 23, 42, 0.04);
+  --bg-hover:      rgba(15, 23, 42, 0.045);
+  --surface-1:     rgba(15, 23, 42, 0.015);
+  --surface-card:  #FFFFFF;
+
+  --border-c:      rgba(15, 23, 42, 0.10);
+  --border-strong: rgba(15, 23, 42, 0.22);
+
+  --text-primary:  #0F172A;
+  --text-strong:   #1E293B;
+  --text-muted:    #5D6B84;
+  --text-subtle:   #64748B;
+  --text-faint:    rgba(15, 23, 42, 0.40);
+
+  --accent-text:   #2563EB;
+  --success-text:  #059669;
+  --danger-text:   #DC2626;
+  --warning-text:  #B45309;
+
+  --shadow-card:   0 8px 24px rgba(15, 23, 42, 0.07);
+  --shadow-lift:   0 12px 32px rgba(15, 23, 42, 0.10), 0 0 0 1px rgba(37, 99, 235, 0.08);
+  --shadow-modal:  0 32px 80px rgba(15, 23, 42, 0.28);
+  --glow-ring:     0 0 0 3px rgba(37, 99, 235, 0.12);
+
+  --grad-text-from: #0F172A;
+  --grad-text-to:   #64748B;
+
+  --scrollbar-thumb:       rgba(15, 23, 42, 0.15);
+  --scrollbar-thumb-hover: rgba(15, 23, 42, 0.28);
+}
+
+/* The auth hero panel stays branded-dark in both themes */
+.hero-dark {
+  --text-primary:  #F1F5F9;
+  --text-strong:   #E2E8F0;
+  --text-muted:    #7C87A0;
+  --text-faint:    rgba(226, 232, 240, 0.35);
+  --grad-text-from: #FFFFFF;
+  --grad-text-to:   #7C87A0;
+}
+
+/* Cross-fade the whole UI while the theme flips (class is added
+   briefly by ThemeContext so normal interactions stay snappy) */
+html.theme-anim,
+html.theme-anim *,
+html.theme-anim *::before,
+html.theme-anim *::after {
+  transition:
+    background-color 0.35s ease,
+    background 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    fill 0.35s ease,
+    box-shadow 0.35s ease !important;
+}
+
+/* Monochrome silver logo — invert to slate for light surfaces */
+:root[data-theme='light'] .brand-logo {
+  filter: invert(0.78) contrast(1.05);
+}
+.hero-dark .brand-logo {
+  filter: none;
+}
+
+/* ─────────────────────────────────────────
    Tailwind v4 Theme — ModelSuite Talents Design System V2
+   (tokens resolve through the CSS variables above)
 ───────────────────────────────────────── */
 @theme inline {
   --color-primary:       #3B82F6;
   --color-primary-dark:  #2563EB;
   --color-secondary:     #6B7280;
-  --color-bg-dark:       #050505;
-  --color-bg-surface:    #0D0D0D;
-  --color-bg-card:       #0D0D0D;
-  --color-bg-input:      rgba(255, 255, 255, 0.05);
-  --color-bg-hover:      rgba(255, 255, 255, 0.04);
-  --color-border:        rgba(255, 255, 255, 0.07);
-  --color-border-light:  rgba(255, 255, 255, 0.15);
-  --color-text-primary:  #F0F0F0;
-  --color-text-muted:    #6B7280;
-  --color-text-faint:    rgba(255, 255, 255, 0.35);
+  --color-bg-dark:       var(--bg-page);
+  --color-bg-surface:    var(--bg-elevated);
+  --color-bg-card:       var(--bg-panel);
+  --color-bg-input:      var(--bg-input);
+  --color-bg-hover:      var(--bg-hover);
+  --color-border:        var(--border-c);
+  --color-border-light:  var(--border-strong);
+  --color-text-primary:  var(--text-primary);
+  --color-text-muted:    var(--text-muted);
+  --color-text-faint:    var(--text-faint);
   --color-success:       #10B981;
   --color-danger:        #EF4444;
   --color-warning:       #F59E0B;
@@ -39,12 +155,16 @@
 
 body {
   font-family: 'Inter', 'Poppins', sans-serif;
-  background: #050505;
-  color: #F0F0F0;
+  background: var(--bg-page);
+  color: var(--text-primary);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(59, 130, 246, 0.35);
 }
 
 /* ─────────────────────────────────────────
@@ -52,8 +172,8 @@ body {
 ───────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.14); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
 
 /* ─────────────────────────────────────────
    Keyframe Animations
@@ -178,7 +298,7 @@ body {
   border-radius: 8px;
   border: none;
   background: transparent;
-  color: #6B7280;
+  color: var(--text-muted);
   font-size: 13.5px;
   font-weight: 500;
   font-family: 'Inter', sans-serif;
@@ -189,18 +309,18 @@ body {
   will-change: transform, background;
 }
 .nav-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #E5E2E1;
+  background: var(--bg-hover);
+  color: var(--text-strong);
   transform: translateX(2px);
 }
 .nav-item:hover .nav-icon {
-  color: rgba(255,255,255,0.7);
+  color: var(--text-muted);
 }
 
 /* Active nav state */
 .nav-active {
   background: rgba(59, 130, 246, 0.1) !important;
-  color: #3B82F6 !important;
+  color: var(--accent-text) !important;
 }
 .nav-active::before {
   content: '';
@@ -212,9 +332,10 @@ body {
   height: 60%;
   background: #3B82F6;
   border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
 }
 .nav-active .nav-icon {
-  color: #3B82F6 !important;
+  color: var(--accent-text) !important;
 }
 
 /* Nav icon */
@@ -222,7 +343,7 @@ body {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: #4B5563;
+  color: var(--text-subtle);
   transition: color 0.15s ease-out;
 }
 
@@ -230,8 +351,8 @@ body {
    Stat Cards
 ───────────────────────────────────────── */
 .stat-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--surface-card);
+  border: 1px solid var(--border-c);
   border-radius: 12px;
   padding: 20px 22px;
   position: relative;
@@ -240,9 +361,9 @@ body {
   will-change: transform, box-shadow;
 }
 .stat-card:hover {
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: var(--border-strong);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow-lift);
 }
 .stat-card::after {
   content: '';
@@ -257,7 +378,7 @@ body {
 .stat-card:hover::after {
   opacity: 1;
 }
-.stat-card-default::after { background: rgba(255,255,255,0.15); }
+.stat-card-default::after { background: var(--border-strong); }
 .stat-card-blue::after    { background: #3B82F6; }
 .stat-card-info::after    { background: #3B82F6; }
 .stat-card-green::after   { background: #10B981; }
@@ -266,8 +387,8 @@ body {
    Table — Modern
 ───────────────────────────────────────── */
 .tasks-container {
-  background: rgba(255, 255, 255, 0.015);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--surface-1);
+  border: 1px solid var(--border-c);
   border-radius: 12px;
   overflow: hidden;
 }
@@ -277,7 +398,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid var(--border-c);
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -289,15 +410,15 @@ body {
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: #4B5563;
-  background: #0A0A0A;
+  color: var(--text-subtle);
+  background: var(--bg-elevated);
   white-space: nowrap;
   font-family: 'Inter', sans-serif;
 }
 
 .table-td {
   padding: 14px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--border-c);
   vertical-align: middle;
 }
 
@@ -307,7 +428,7 @@ body {
   transition: background 0.12s ease-out, border-color 0.12s ease-out;
 }
 .table-row:hover {
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--bg-hover);
   border-left-color: rgba(59, 130, 246, 0.5);
 }
 .table-row:last-child .table-td {
@@ -316,30 +437,30 @@ body {
 
 /* Search input glass */
 .search-input-glass {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.09);
+  background: var(--bg-input);
+  border: 1px solid var(--border-c);
   border-radius: 8px;
-  color: #E5E2E1;
+  color: var(--text-strong);
   font-size: 13px;
   font-family: 'Inter', sans-serif;
   padding: 7px 12px 7px 32px;
   transition: border-color 0.15s ease-out, box-shadow 0.15s ease-out;
   outline: none;
 }
-.search-input-glass::placeholder { color: rgba(255,255,255,0.25); }
+.search-input-glass::placeholder { color: var(--text-faint); }
 .search-input-glass:focus {
   border-color: rgba(59,130,246,0.5);
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+  box-shadow: var(--glow-ring);
 }
 
 /* ─────────────────────────────────────────
    Status Badges — pill shaped
 ───────────────────────────────────────── */
-.status-badge-Open      { background: rgba(255,255,255,0.07);  color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.12); }
-.status-badge-Claimed   { background: rgba(245,158,11,0.12);   color: #F59E0B; border: 1px solid rgba(245,158,11,0.3); }
-.status-badge-Submitted { background: rgba(59,130,246,0.12);   color: #60A5FA; border: 1px solid rgba(59,130,246,0.3); }
-.status-badge-Approved  { background: rgba(16,185,129,0.12);   color: #34D399; border: 1px solid rgba(16,185,129,0.3); }
-.status-badge-Rejected  { background: rgba(239,68,68,0.12);    color: #F87171; border: 1px solid rgba(239,68,68,0.3); }
+.status-badge-Open      { background: var(--bg-input);          color: var(--text-strong);   border: 1px solid var(--border-strong); }
+.status-badge-Claimed   { background: rgba(245,158,11,0.12);    color: var(--warning-text);  border: 1px solid rgba(245,158,11,0.3); }
+.status-badge-Submitted { background: rgba(59,130,246,0.12);    color: var(--accent-text);   border: 1px solid rgba(59,130,246,0.3); }
+.status-badge-Approved  { background: rgba(16,185,129,0.12);    color: var(--success-text);  border: 1px solid rgba(16,185,129,0.3); }
+.status-badge-Rejected  { background: rgba(239,68,68,0.12);     color: var(--danger-text);   border: 1px solid rgba(239,68,68,0.3); }
 
 /* ─────────────────────────────────────────
    Action Icon Buttons
@@ -360,7 +481,7 @@ body {
 
 .action-btn-edit {
   background: rgba(59,130,246,0.08);
-  color: #60A5FA;
+  color: var(--accent-text);
   border-color: rgba(59,130,246,0.15);
 }
 .action-btn-edit:hover {
@@ -370,7 +491,7 @@ body {
 
 .action-btn-delete {
   background: rgba(239,68,68,0.08);
-  color: #F87171;
+  color: var(--danger-text);
   border-color: rgba(239,68,68,0.15);
 }
 .action-btn-delete:hover {
@@ -382,28 +503,29 @@ body {
    My Tasks Card List
 ───────────────────────────────────────── */
 .task-card {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.07);
+  background: var(--surface-card);
+  border: 1px solid var(--border-c);
   border-radius: 10px;
   padding: 14px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  transition: border-color 0.15s ease-out, background 0.15s ease-out, transform 0.15s ease-out;
+  transition: border-color 0.15s ease-out, background 0.15s ease-out, transform 0.15s ease-out, box-shadow 0.15s ease-out;
   will-change: transform;
 }
 .task-card:hover {
-  border-color: rgba(255,255,255,0.13);
-  background: rgba(255,255,255,0.035);
+  border-color: var(--border-strong);
+  background: var(--bg-hover);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
 }
 
 /* ─────────────────────────────────────────
    Gradient text
 ───────────────────────────────────────── */
 .gradient-text {
-  background: linear-gradient(135deg, #ffffff 30%, #6B7280 100%);
+  background: linear-gradient(135deg, var(--grad-text-from) 30%, var(--grad-text-to) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -414,7 +536,7 @@ body {
 ───────────────────────────────────────── */
 .sidebar-divider {
   height: 1px;
-  background: rgba(255,255,255,0.06);
+  background: var(--border-c);
   margin: 0 -4px;
 }
 
@@ -464,7 +586,7 @@ input, select, textarea {
 .logout-btn {
   background: transparent;
   border: none;
-  color: #4B5563;
+  color: var(--text-subtle);
   cursor: pointer;
   padding: 6px;
   border-radius: 7px;
@@ -476,4 +598,58 @@ input, select, textarea {
 .logout-btn:hover {
   color: #EF4444;
   background: rgba(239,68,68,0.1);
+}
+
+/* ─────────────────────────────────────────
+   Theme toggle — sun that morphs into a moon
+   The moon is the sun's core with a masked "bite"; rays spin
+   away and the bite slides in when switching to dark mode.
+───────────────────────────────────────── */
+.theme-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text-subtle);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease-out, background 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.theme-toggle:hover {
+  color: var(--accent-text);
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.15);
+}
+.theme-toggle:active .sun-moon {
+  transform: scale(0.9);
+}
+
+.sun-moon {
+  transition: transform 0.2s ease-out;
+}
+.sun-moon .sun-core {
+  transform-origin: center;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sun-moon .sun-rays {
+  transform-origin: center;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease-out;
+}
+.sun-moon .moon-bite {
+  transition: cx 0.5s cubic-bezier(0.4, 0, 0.2, 1), cy 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark mode → moon: core grows, bite slides in, rays spin out */
+:root:not([data-theme='light']) .sun-moon .sun-core {
+  transform: scale(1.55);
+}
+:root:not([data-theme='light']) .sun-moon .moon-bite {
+  cx: 16px;
+  cy: 7px;
+}
+:root:not([data-theme='light']) .sun-moon .sun-rays {
+  transform: rotate(-45deg) scale(0);
+  opacity: 0;
 }

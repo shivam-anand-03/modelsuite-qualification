@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import API from '../api/axios';
+import ThemeToggle from '../components/ThemeToggle';
 
 const Logo = () => (
-  <img src="/modelsuite-talents.png" alt="ModelSuite Talents Logo" className="w-80 h-auto object-contain mx-auto block hover:scale-105 transition-transform duration-300" />
+  <img src="/modelsuite-talents.png" alt="ModelSuite Talents Logo" className="brand-logo w-80 h-auto object-contain mx-auto block hover:scale-105 transition-transform duration-300" />
 );
 
-const inputCls = 'w-full bg-bg-input border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary outline-none placeholder:text-[#4e4a6e] focus:border-primary focus:ring-[3px] focus:ring-primary/20 transition-all duration-200 font-sans hover:border-border-light';
+const inputCls = 'w-full bg-bg-input border border-border rounded-[10px] px-4 py-3 text-[15px] text-text-primary outline-none placeholder:text-text-faint focus:border-primary focus:ring-[3px] focus:ring-primary/20 transition-all duration-200 font-sans hover:border-border-light';
 const labelCls = 'text-[11px] font-semibold uppercase tracking-[0.6px] text-text-muted group-focus-within:text-primary transition-colors duration-200';
 
 const LoginPage = () => {
@@ -31,6 +32,9 @@ const LoginPage = () => {
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[480px_1fr]">
       {/* ── Left: Form panel ── */}
       <div className="relative flex flex-col justify-center px-14 py-16 bg-bg-card border-r border-border overflow-hidden sidebar-glow animate-fade-in">
+        <div className="absolute top-6 right-6 z-20">
+          <ThemeToggle />
+        </div>
         <div className="mb-10 relative z-10 animate-fade-slide" style={{ filter: 'drop-shadow(0 4px 16px rgba(59,130,246,0.3))', animationDelay: '0.1s', animationFillMode: 'both' }}>
           <Logo id="login-grad" />
         </div>
@@ -61,15 +65,15 @@ const LoginPage = () => {
 
         <p className="mt-7 text-sm text-text-muted text-center relative z-10 animate-fade-slide" style={{ animationDelay: '0.25s', animationFillMode: 'both' }}>
           New candidate?{' '}
-          <Link to="/register" className="text-primary font-medium hover:text-white hover:underline transition-all duration-200">
+          <Link to="/register" className="text-primary font-medium hover:text-primary-dark hover:underline transition-all duration-200">
             Setup your profile
           </Link>
         </p>
       </div>
 
       {/* ── Right: Visual panel ── */}
-      <div className="hidden lg:flex flex-col items-center justify-center relative overflow-hidden p-16 animate-fade-in min-h-screen"
-        style={{ background: 'linear-gradient(140deg, #050505 0%, #111111 50%, #000000 100%)', animationDelay: '0.1s', animationFillMode: 'both' }}>
+      <div className="hero-dark hidden lg:flex flex-col items-center justify-center relative overflow-hidden p-16 animate-fade-in min-h-screen"
+        style={{ background: 'linear-gradient(140deg, #050810 0%, #0B1120 50%, #030509 100%)', animationDelay: '0.1s', animationFillMode: 'both' }}>
         
         {/* Top Right Info Icon */}
         <div className="absolute top-12 right-12 group z-50">

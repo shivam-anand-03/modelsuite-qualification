@@ -2,7 +2,7 @@
 import { updateTask, fetchTalents } from '../../api/tasks';
 
 const STATUS_OPTIONS = ['Open', 'Claimed', 'Submitted', 'Approved', 'Rejected'];
-const inputCls = 'w-full bg-bg-input border border-border rounded-lg px-3.5 py-2.5 text-sm text-text-primary outline-none placeholder:text-[#4e4a6e] focus:border-primary focus:ring-[3px] focus:ring-primary/15 transition-all font-sans resize-y';
+const inputCls = 'w-full bg-bg-input border border-border rounded-lg px-3.5 py-2.5 text-sm text-text-primary outline-none placeholder:text-text-faint focus:border-primary focus:ring-[3px] focus:ring-primary/15 transition-all font-sans resize-y';
 const labelCls = 'text-[11px] font-semibold uppercase tracking-[0.5px] text-text-muted';
 
 const EditTaskModal = ({ task, onClose, onUpdated }) => {
@@ -35,7 +35,7 @@ const EditTaskModal = ({ task, onClose, onUpdated }) => {
   return (
     <div className="fixed inset-0 bg-black/65 backdrop-blur-sm flex items-center justify-center z-[200] p-6"
       onClick={onClose}>
-      <div className="bg-bg-card border border-border rounded-xl w-full max-w-xl shadow-[0_32px_80px_rgba(0,0,0,0.6)] animate-modal-in"
+      <div className="bg-bg-card border border-border rounded-xl w-full max-w-xl shadow-[var(--shadow-modal)] animate-modal-in"
         onClick={(e) => e.stopPropagation()}>
 
         <div className="flex items-center justify-between px-6 py-5 border-b border-border">
