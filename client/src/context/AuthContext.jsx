@@ -26,4 +26,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// Exporting this hook alongside the provider is intentional (standard context pattern)
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);

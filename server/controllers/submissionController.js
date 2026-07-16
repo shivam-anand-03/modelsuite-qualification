@@ -17,22 +17,21 @@ const submitTask = async (req, res) => {
     const fileUrl = req.file
       ? `http://localhost:5000/uploads/${req.file.filename}`
       : req.body.fileUrl || null;
-    // — no audit trail of re-submissions
-    let submission = await Submission.findOne({ taskId, talentId: req.user._id });
 
-    if (submission) {
-      // Overwrite: update in place
-      submission.fileUrl = fileUrl;
-      submission.notes = notes;
-      await submission.save();
-    } else {
-      submission = await Submission.create({
-        taskId,
-        talentId: req.user._id,
-        fileUrl,
-        notes,
-      });
-    }
+    // Every submission is stored as a new document so earlier attempts
+    // (and their files) are never overwritten — full audit trail
+    const previousAttempts = await Submission.countDocuments({
+      taskId,
+      talentId: req.user._id,
+    });
+
+    const submission = await Submission.create({
+      taskId,
+      talentId: req.user._id,
+      fileUrl,
+      notes,
+      attempt: previousAttempts + 1,
+    });
 
     // Update task status to Submitted
     await Task.findByIdAndUpdate(taskId, { status: 'Submitted' });
@@ -48,7 +47,9 @@ const submitTask = async (req, res) => {
 // @access Protect only — no admin guard
 const getSubmission = async (req, res) => {
   try {
+    // Multiple attempts may exist per task — return the most recent one
     const submission = await Submission.findOne({ taskId: req.params.taskId })
+      .sort({ createdAt: -1 })
       .populate('talentId', 'name email');
 
     if (!submission) {

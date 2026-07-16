@@ -81,7 +81,7 @@ const SubmissionsPage = () => {
                     <th className={thCls}>Talent</th>
                     <th className={thCls}>Notes</th>
                     <th className={thCls}>File</th>
-                    
+                    <th className={thCls}>Attempt</th>
                     <th className={thCls}>Submitted</th>
                     <th className={thCls}>Review Status</th>
                     <th className={thCls}>Actions</th>
@@ -126,6 +126,13 @@ const SubmissionsPage = () => {
                         ) : (
                           <span className="text-text-faint text-[13px] italic">None</span>
                         )}
+                      </td>
+
+                      {/* Attempt number — each re-submission is kept as a new attempt */}
+                      <td className={`${tdCls} whitespace-nowrap`}>
+                        <span className="inline-block px-2.5 py-[3px] rounded-full text-[11px] font-semibold bg-bg-input border border-border text-text-muted">
+                          #{sub.attempt || 1}
+                        </span>
                       </td>
 
                       {/* Submitted at — raw ISO */}

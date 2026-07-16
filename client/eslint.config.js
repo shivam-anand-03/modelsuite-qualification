@@ -17,5 +17,13 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // Core ESLint can't see JSX usage — ignore capitalized (component) vars
+      // and params, same as the official Vite React template
+      'no-unused-vars': [
+        'error',
+        { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^[A-Z_]' },
+      ],
+    },
   },
 ])

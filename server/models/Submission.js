@@ -1,5 +1,6 @@
 ﻿const mongoose = require('mongoose');
-//   multiple times for the same task (no duplicate prevention)
+// Each submission attempt is stored as its own document so that
+// re-submissions never overwrite earlier data (full audit trail)
 const submissionSchema = new mongoose.Schema(
   {
     taskId: {
@@ -15,6 +16,10 @@ const submissionSchema = new mongoose.Schema(
     },
     notes: {
       type: String,
+    },
+    attempt: {
+      type: Number,
+      default: 1,
     },
     reviewStatus: {
       type: String,
