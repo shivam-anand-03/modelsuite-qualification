@@ -1,4 +1,5 @@
 ﻿const Task = require('../models/Task');
+const { notifyTaskAssigned } = require('../services/notificationService');
 
 // Returns an error message if the due date is invalid or in the past, else null.
 // Due dates are calendar days (YYYY-MM-DD from the form) — a task due today is
@@ -73,6 +74,11 @@ const createTask = async (req, res) => {
       createdBy: req.user._id,
     });
 
+    // Let the talent know a task was assigned to them on creation
+    if (task.assignedTo) {
+      await notifyTaskAssigned(task.assignedTo, task);
+    }
+
     res.status(201).json(task);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -101,6 +107,12 @@ const updateTask = async (req, res) => {
       { ...req.body },
       { new: true }
     ).populate('assignedTo', 'name email');
+
+    // Notify only when the task was (re)assigned to a different talent
+    const newAssignee = req.body.assignedTo;
+    if (newAssignee && String(newAssignee) !== String(task.assignedTo || '')) {
+      await notifyTaskAssigned(newAssignee, updated);
+    }
 
     res.json(updated);
   } catch (error) {
