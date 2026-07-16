@@ -97,8 +97,14 @@ const reviewSubmission = async (req, res) => {
     if (!submission) {
       return res.status(404).json({ message: 'Submission not found' });
     }
-    // — task stays 'Submitted' even after the submission is Approved/Rejected
-    // Proper flow: also update Task.status to 'Approved'/'Rejected'
+
+    // If the submission is approved and it has an associated task, update the
+    // task's status to 'Approved' in the database. Also, update the populated
+    // response to reflect this change.
+    if (reviewStatus === 'Approved' && submission.taskId) {
+      await Task.findByIdAndUpdate(submission.taskId._id, { status: 'Approved' });
+      submission.taskId.status = 'Approved'; // keep the populated response fresh
+    }
 
     res.json(submission);
   } catch (error) {
