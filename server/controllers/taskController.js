@@ -17,22 +17,6 @@ const validateDueDate = (dueDate) => {
   return null;
 };
 
-// Returns an error message if the due date is invalid or in the past, else null.
-// Due dates are calendar days (YYYY-MM-DD from the form) — a task due today is
-// still actionable, so only days strictly before today are rejected.
-const validateDueDate = (dueDate) => {
-  const due = new Date(dueDate);
-  if (isNaN(due.getTime())) {
-    return 'Invalid due date';
-  }
-  const startOfToday = new Date();
-  startOfToday.setHours(0, 0, 0, 0);
-  if (due.getTime() < startOfToday.getTime()) {
-    return 'Due date cannot be in the past';
-  }
-  return null;
-};
-
 // @desc  Get all tasks
 // @route GET /api/tasks
 // @access Admin
